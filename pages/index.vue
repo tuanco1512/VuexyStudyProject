@@ -12,7 +12,7 @@
         placeholder="Nguồn"
       />
       <AppSelect
-        :items="items"
+        :items="houseType"
         density="compact"
         placeholder="Loại nhà"
       />
@@ -68,10 +68,10 @@
         <template #item.type="{ item }">
           <div class="d-flex align-center">
             <div class="item-type d-flex flex-column">
-              <div class="house-type-acreage">{{ item.type }}</div>
-              <span class="house-adress">{{ item.address }}</span>
+              <div class="house-type-acreage">{{ item.PropertyType }}</div>
+              <span class="house-adress">{{ item.Address }}</span>
               <nuxt-link :to="`/`" class="link-source">
-                {{ item.source }}
+                {{ item.website.Domain }}
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
                   <path
                     d="M5.5 3.5H3C2.44772 3.5 2 3.94772 2 4.5V9C2 9.55228 2.44772 10 3 10H7.5C8.05228 10 8.5 9.55228 8.5 9V6.5"
@@ -97,30 +97,30 @@
         <!-- Status -->
         <template #item.status="{ item }">
           <VChip
-            :color="resolveStatusVariant(item.status).color"
+            :color="resolveStatusVariant(item.Status).color"
             class="font-weight-medium"
             size="small"
           >
-            {{ resolveStatusVariant(item.status).text }}
+            {{ resolveStatusVariant(item.Status).text }}
           </VChip>
         </template>
 
         <!-- Sale Type -->
         <template #item.saleType="{ item }">
-          <div class="sale-type">{{item.saleType}}</div>
+          <div class="sale-type">{{ item.type.TypeName }}</div>
         </template>
 
         <!-- Price -->
         <template #item.salary="{ item }">
-          <div class="item-salary">{{item.salary}}</div>
+          <div class="item-salary">{{ item.Price }}</div>
         </template>
 
         <!-- full name -->
         <template #item.fullName="{ item }">
           <div class="d-flex align-center">
             <div class="item-fullName d-flex flex-column">
-              <div class="author-name">{{ item.fullName }}</div>
-              <span class="total-post">{{ item.totalPost }}</span>
+              <div class="author-name">{{ item.user.Name }}</div>
+              <span class="total-post">{{ item.user.listings_count }} tin</span>
             </div>
           </div>
         </template>
@@ -210,6 +210,14 @@ const items = [
   'Buzz',
 ]
 
+const houseType = [
+  'Nhà biệt thự, liền kề',
+  'Căn hộ chung cư',
+  'Bán đất',
+  'Nhà mặt phố',
+  'Nhà riêng'
+]
+
 import {VDataTable} from 'vuetify/labs/VDataTable'
 //import data from '@/views/demos/forms/tables/data-table/datatable'
 
@@ -238,7 +246,7 @@ const userList = ref([])
 const headers = [
   {
     title: 'ID',
-    key: 'id',
+    key: 'Id',
   },
   {
     title: 'Tiêu đề',
@@ -262,7 +270,7 @@ const headers = [
   },
   {
     title: 'Ngày crawl',
-    key: 'startDate',
+    key: 'CrawlDate',
   },
   {
     title: 'Hành động',
@@ -270,164 +278,7 @@ const headers = [
   }
 ]
 
-const data = [
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Bán',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tỷ',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Bán',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tỷ',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Bán',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tỷ',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Bán',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tỷ',
-    age: '27',
-    status: 4,
-    totalPost: '12 tin',
-  },
-  {
-    id: 11231,
-    fullName: 'Vũ Minh Anh Tuấn',
-    type: '[Loại BĐS] - [diện tích]',
-    saleType:'Cho thuê',
-    address: 'An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ An Dương Vương, Phường Phú Thượng, Quận Tây Hồ',
-    source: 'Nguồn: batdonsan.com.vn',
-    startDate: '8/12/2023',
-    salary: '10,5 tr',
-    age: '27',
-    status: 4,
-    totalPost: '',
-  },
-]
+const data = ref([])
 
 const resolveStatusVariant = status => {
   if (status === 1)
@@ -479,10 +330,29 @@ const deleteItemConfirm = () => {
   closeDelete()
 }
 
-onMounted(async () => {
-  const {data} = await useApi('/api/hello')
-  console.log(data)
-})
+// let users = [
+//   { name: 'John', age: 25, occupation: 'gardener' },
+//   { name: 'Lenny', age: 51, occupation: 'programmer' },
+//   { name: 'Andrew', age: 43, occupation: 'teacher' },
+//   { name: 'Peter', age: 81, occupation: 'teacher' },
+//   { name: 'Anna', age: 47, occupation: 'programmer' },
+//   { name: 'Albert', age: 76, occupation: 'programmer' },
+// ]
+//
+// let filteredUsers = users.filter(user => user.age > 40 && user.occupation === 'programmer');
+// console.log(filteredUsers);
+
+onMounted(
+  async () => {
+    const repo = await useApi('/api/hello')
+    console.log(repo.data.value)
+    data.value = repo.data.value.data
+
+    const filtereddata = data.value.filter(item => item.PropertyType === 'Nhà riêng');
+    console.log(filtereddata);
+  },
+)
+
 </script>
 
 <style lang="scss" scoped>
@@ -551,9 +421,10 @@ onMounted(async () => {
     }
   }
 
-  .item-type{
+  .item-type {
     padding: 11px 0;
-    .house-type-acreage{
+
+    .house-type-acreage {
       color: var(--Light-Typography-Color-Body-Text, #4B465C);
       font-feature-settings: 'clig' off, 'liga' off;
 
@@ -564,7 +435,8 @@ onMounted(async () => {
       font-weight: 600;
       line-height: 22px; /* 146.667% */
     }
-    .house-adress{
+
+    .house-adress {
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -580,7 +452,7 @@ onMounted(async () => {
       line-height: 20px; /* 153.846% */
     }
 
-    .link-source{
+    .link-source {
       display: flex;
       align-items: center;
       gap: 5px;
@@ -598,7 +470,7 @@ onMounted(async () => {
     }
   }
 
-  .sale-type{
+  .sale-type {
     color: var(--Light-Solid-Color-Primary-Primary---900, #7367F0);
     font-feature-settings: 'clig' off, 'liga' off;
 
@@ -610,7 +482,7 @@ onMounted(async () => {
     line-height: 20px; /* 153.846% */
   }
 
-  .item-salary{
+  .item-salary {
     color: var(--Light-Solid-Color-Primary-Primary---900, #7367F0);
     font-feature-settings: 'clig' off, 'liga' off;
 
@@ -622,13 +494,14 @@ onMounted(async () => {
     line-height: 20px; /* 153.846% */
   }
 
-  .item-fullName{
+  .item-fullName {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     gap: 4px;
-    .author-name{
+
+    .author-name {
       color: var(--Light-Typography-Color-Body-Text, #4B465C);
       font-feature-settings: 'clig' off, 'liga' off;
 
@@ -639,7 +512,8 @@ onMounted(async () => {
       font-weight: 400;
       line-height: 20px; /* 153.846% */
     }
-    .total-post{
+
+    .total-post {
       display: flex;
       padding: 2px 4px;
       flex-direction: column;
